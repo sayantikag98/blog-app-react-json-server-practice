@@ -1,24 +1,50 @@
-import logo from './logo.svg';
-import './App.css';
+import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
+
+import NavBar from "./components/NavBar";
+import Home from "./components/Home";
+import About from "./components/About";
+import Create from "./components/Create";
+import DisplayBlog from "./components/DisplayBlog";
 
 function App() {
+  const blogs = [
+    {
+      title: "Blog 1",
+      author: "Sayantika Ghosh",
+      body: "herhf iuheruh iuehrugh hrughuyr rughuyh huhhuh uguhu",
+      id: 1
+    },
+    {
+      title: "Blog 2",
+      author: "Jhimli Ghosh",
+      body: "kheijwfhue hewrvhre rughuyh huhhuh uguhu",
+      id: 2
+    },
+    {
+      title: "Blog 3",
+      author: "Sumit Ghosh",
+      body: "ejnrfj kjehgjreh jhegtrjh uguhu",
+      id: 3
+    }
+  ];
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router basename = "blogs">
+      <div className="App">
+        <NavBar />
+        <Switch>
+          <Route exact path = "/">
+            <Home blogs = {blogs} />
+          </Route>
+          <Route path = "/about" component = {About}/>
+          <Route path = "/create" component = {Create}/> 
+          <Route path = "/:id">
+            <DisplayBlog blogs = {blogs} />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
