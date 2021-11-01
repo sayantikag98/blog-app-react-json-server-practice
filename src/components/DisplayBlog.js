@@ -1,13 +1,31 @@
-import { useParams } from "react-router";
+import { useParams, useHistory } from "react-router";
 import { useState, useEffect } from "react";
 
-export default function DisplayBlog({blogs}){
+import {dataFetch} from "./dataFetch";
+
+export default function DisplayBlog(){
     const {id} = useParams();  // id is a string 
     const [blog, setBlog] = useState(null);
+    let history = useHistory();
 
     useEffect(() => {
-        setBlog (blogs.find(blog => blog.id === Number(id)));
-    }, [blogs, id, blog]);
+        dataFetch(`http://localhost:5000/blogs/${id}`, setBlog);   
+    }, [id]);
+
+    const HandleDelete = async() => {
+        try{
+            const response = await fetch(`http://localhost:5000/blogs/${id}`, {
+                method: "DELETE"
+            });
+            if(response.ok){
+                console.log("Blog deleted...");
+                history.push("/");
+            }
+        }
+        catch(err){
+            console.log(err.message);
+        }
+    };
 
     return (
         <main>
@@ -16,7 +34,7 @@ export default function DisplayBlog({blogs}){
                 <h2>{blog.title}</h2>
                 <h6>{blog.author}</h6>
                 <p>{blog.body}</p>
-                <button>Delete Blog</button>
+                <button onClick = {HandleDelete}>Delete Blog</button>
             </section>}     
         </main>
     );

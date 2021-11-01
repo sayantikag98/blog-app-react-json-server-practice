@@ -1,32 +1,19 @@
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import {useState, useEffect} from "react";
 
 import NavBar from "./components/NavBar";
 import Home from "./components/Home";
 import About from "./components/About";
 import Create from "./components/Create";
 import DisplayBlog from "./components/DisplayBlog";
+import {dataFetch} from "./components/dataFetch";
 
 function App() {
-  const blogs = [
-    {
-      title: "Blog 1",
-      author: "Sayantika Ghosh",
-      body: "herhf iuheruh iuehrugh hrughuyr rughuyh huhhuh uguhu",
-      id: 1
-    },
-    {
-      title: "Blog 2",
-      author: "Jhimli Ghosh",
-      body: "kheijwfhue hewrvhre rughuyh huhhuh uguhu",
-      id: 2
-    },
-    {
-      title: "Blog 3",
-      author: "Sumit Ghosh",
-      body: "ejnrfj kjehgjreh jhegtrjh uguhu",
-      id: 3
-    }
-  ];
+  const [blogs, setBlogs] = useState(null);
+
+  useEffect(() => {
+    dataFetch("http://localhost:5000/blogs", setBlogs);
+  }, []);
 
 
   return (
@@ -35,13 +22,12 @@ function App() {
         <NavBar />
         <Switch>
           <Route exact path = "/">
-            <Home blogs = {blogs} />
+            {blogs && blogs.length === 0 && <div style = {{paddingLeft:"20px"}}>No blog to display ...</div>}
+            {blogs && <Home blogs = {blogs} />}
           </Route>
           <Route path = "/about" component = {About}/>
           <Route path = "/create" component = {Create}/> 
-          <Route path = "/:id">
-            <DisplayBlog blogs = {blogs} />
-          </Route>
+          <Route path = "/:id" component = {DisplayBlog}/>
         </Switch>
       </div>
     </Router>
