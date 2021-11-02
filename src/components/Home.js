@@ -26,7 +26,7 @@ export default function Home(){
             setMatchFound(true);
         }
         else{
-            const searchedBlogs = blogs.filter(blog => blog.title.startsWith(event.target.value));
+            const searchedBlogs = blogs.filter(blog => blog.title.toLowerCase().startsWith(event.target.value.toLowerCase()));
             if(searchedBlogs.length === 0 && blogs.length > 0)
                 setMatchFound(false);
             else 
