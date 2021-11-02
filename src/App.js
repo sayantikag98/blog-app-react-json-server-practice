@@ -4,10 +4,11 @@ import {useState, useEffect} from "react";
 import NavBar from "./components/NavBar";
 import Home from "./components/Home";
 import About from "./components/About";
-import Create from "./components/Create";
+import CreateBlog from "./components/CreateBlog";
 import DisplayBlog from "./components/DisplayBlog";
 import NotFound from "./components/NotFound";
 import {dataFetch} from "./components/dataFetch";
+import EditBlog from "./components/EditBlog";
 
 function App() {
   const [blogs, setBlogs] = useState(null);
@@ -24,17 +25,21 @@ function App() {
         <NavBar />
         <Switch>
           <Route exact path = "/">
-            {blogs && blogs.length === 0 && <div style = {{paddingLeft:"20px"}}>No blog to display ...</div>}
-            {blogs && <Home blogs = {blogs} />}
+            {blogs && <Home />}
+            {blogs && blogs.length === 0 && <div style = {{padding:"20px"}}>No blog to display ...</div>}
             {error && <NotFound />}
           </Route>
           <Route path = "/about" component = {About}/>
           <Route path = "/create" >
-            <Create setBlogs = {setBlogs} setError = {setError}/>
+            <CreateBlog setBlogs = {setBlogs} setError = {setError}/>
           </Route> 
+          <Route path = "/edit/:id">
+            <EditBlog setBlogs = {setBlogs}/>
+          </Route>
           <Route path = "/:id">
             <DisplayBlog setBlogs = {setBlogs}/>
           </Route>
+          
           <Route path = "*" component = {NotFound} />
         </Switch>
       </div>

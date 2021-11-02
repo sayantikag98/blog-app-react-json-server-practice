@@ -66,7 +66,13 @@ nav{
 
 #home-main{
   padding: 10px;
+}
 
+#search-section{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
 }
 
 .blog-section{
@@ -77,6 +83,18 @@ nav{
   border-top-left-radius: 20px;
   border-bottom-right-radius: 20px;
   border-left: 5px solid rgb(197, 6, 255);
+}
+
+#search-blog{
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid black;
+  padding-right: 30px;
+}
+
+#search-icon{
+  position: absolute;
+  right: 36.5%;
 }
 
 /* About.js */
@@ -126,4 +144,12 @@ nav{
   width: max-content;
   border-radius: 5px;
   border: 1px solid black; 
+}
+
+/* DisplayBlog.js */
+
+#button-section{
+  width: 30%;
+  display: flex;
+  justify-content: space-between;
 }

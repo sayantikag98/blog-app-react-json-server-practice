@@ -1,4 +1,4 @@
-import { useParams, useHistory } from "react-router";
+import { useParams, useHistory, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 import {dataFetch} from "./dataFetch";
@@ -13,6 +13,9 @@ export default function DisplayBlog({setBlogs}){
     useEffect(() => {
         dataFetch(`http://localhost:5000/blogs/${id}`, setBlog, setError);   
     }, [id]);
+
+    const HandleEdit = () => {
+    };
 
     const HandleDelete = async() => {
         try{
@@ -37,7 +40,12 @@ export default function DisplayBlog({setBlogs}){
                 <h2>{blog.title}</h2>
                 <h6>{blog.author}</h6>
                 <p>{blog.body}</p>
-                <button onClick = {HandleDelete}>Delete Blog</button>
+                <section id = "button-section">
+                    <Link to = {`/edit/${id}`}>
+                        <button onClick = {HandleEdit}>Edit Blog</button>
+                    </Link>
+                    <button onClick = {HandleDelete}>Delete Blog</button>
+                </section>   
             </section>} 
             {error && <NotFound/>}    
         </main>

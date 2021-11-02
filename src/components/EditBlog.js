@@ -1,14 +1,30 @@
-import {useState} from "react";
-import { useHistory } from "react-router";
+import {useState, useEffect} from "react";
+import { useParams, useHistory } from "react-router";
 
 import { dataFetch } from "./dataFetch";
 
-export default function Create({setBlogs, setError}){
+export default function EditBlog({setBlogs}){
+
+    const {id} = useParams();
+    const [error, setError] = useState(null);
     const [title, setTitle] = useState("");
     const [author, setAuthor] = useState("");
     const [body, setBody] = useState("");
 
     let history = useHistory();
+
+    useEffect(() => {
+        fetch(`http://localhost:5000/blogs/${id}`)
+        .then(response => response.json())
+        .then(data => {
+            setTitle(data.title);
+            setAuthor(data.author);
+            setBody(data.body);
+        })
+        .catch(err => {
+            setError(err.message);
+        })
+    }, [id]);
 
     const HandleChangeTitle = (event) => {
         setTitle(event.target.value);
@@ -25,8 +41,8 @@ export default function Create({setBlogs, setError}){
     const HandleSubmit = async (event) => {
         try{
             event.preventDefault();
-            const response = await fetch("http://localhost:5000/blogs", {
-                method: "POST",
+            const response = await fetch(`http://localhost:5000/blogs/${id}`, {
+                method: "PATCH",
                 headers: {
                     "Content-Type":"application/json"
                 },
@@ -40,6 +56,7 @@ export default function Create({setBlogs, setError}){
         }
         catch(err){
             setError(err.message);
+            console.log(error);
         }   
     };
 
