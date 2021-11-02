@@ -2,14 +2,16 @@ import { useParams, useHistory } from "react-router";
 import { useState, useEffect } from "react";
 
 import {dataFetch} from "./dataFetch";
+import NotFound from "./NotFound";
 
-export default function DisplayBlog(){
+export default function DisplayBlog({setBlogs}){
     const {id} = useParams();  // id is a string 
     const [blog, setBlog] = useState(null);
+    const [error, setError] = useState(null);
     let history = useHistory();
 
     useEffect(() => {
-        dataFetch(`http://localhost:5000/blogs/${id}`, setBlog);   
+        dataFetch(`http://localhost:5000/blogs/${id}`, setBlog, setError);   
     }, [id]);
 
     const HandleDelete = async() => {
@@ -19,11 +21,12 @@ export default function DisplayBlog(){
             });
             if(response.ok){
                 console.log("Blog deleted...");
+                dataFetch("http://localhost:5000/blogs", setBlogs, setError);
                 history.push("/");
             }
         }
         catch(err){
-            console.log(err.message);
+            setError(err.message);
         }
     };
 
@@ -35,7 +38,8 @@ export default function DisplayBlog(){
                 <h6>{blog.author}</h6>
                 <p>{blog.body}</p>
                 <button onClick = {HandleDelete}>Delete Blog</button>
-            </section>}     
+            </section>} 
+            {error && <NotFound/>}    
         </main>
     );
 }

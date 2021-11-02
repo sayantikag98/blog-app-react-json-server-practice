@@ -1,7 +1,9 @@
 import {useState} from "react";
 import { useHistory } from "react-router";
 
-export default function Create(){
+import { dataFetch } from "./dataFetch";
+
+export default function Create({setBlogs, setError}){
     const [title, setTitle] = useState("");
     const [author, setAuthor] = useState("");
     const [body, setBody] = useState("");
@@ -32,11 +34,12 @@ export default function Create(){
             });
             if(response.ok){
                 console.log("New blog added...");
+                dataFetch("http://localhost:5000/blogs", setBlogs, setError);
                 history.push("/");
             }
         }
         catch(err){
-            console.log(err.message);
+            setError(err.message);
         }   
     };
 

@@ -1,10 +1,15 @@
-export const dataFetch = async (url, setData) => {
+export const dataFetch = async (url, setData, setError) => {
     try{
       const response = await fetch(url);
-      const data = await response.json();
-      setData(data);
+      if(!response.ok){
+        throw new Error("Page not found");
+      }
+      else{
+        const data = await response.json();
+        setData(data);
+      } 
     }
     catch(err){
-      console.log(err.message);
+      setError(err.message);
     }
 }; 
